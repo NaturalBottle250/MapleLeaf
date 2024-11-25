@@ -1,0 +1,16 @@
+﻿namespace MapleLeaf;
+
+public enum TokenType
+{
+    INT, BOOL, STRING,
+    
+    EQUAL, EQUAL_EQUAL, BANG, BANG_EQUAL,
+    GREATER, LESS, GREATER_EQUAL, LESS_EQUAL,
+    
+    PLUS, MINUS, DOT, SLASH, COMMA, SEMICOLON, COLON, LPAREN, RPAREN, LBRACE, RBRACE,
+    
+    AND, OR, TRUE, FALSE, IF, ELSE, NULL, VAR, FOR, WHILE, BASE, THIS, RETURN,
+    
+    
+    EOF
+}
