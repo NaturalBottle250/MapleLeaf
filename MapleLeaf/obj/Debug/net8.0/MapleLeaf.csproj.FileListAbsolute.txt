@@ -1,0 +1,14 @@
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\bin\Debug\net8.0\MapleLeaf.exe
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\bin\Debug\net8.0\MapleLeaf.deps.json
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\bin\Debug\net8.0\MapleLeaf.runtimeconfig.json
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\bin\Debug\net8.0\MapleLeaf.dll
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\bin\Debug\net8.0\MapleLeaf.pdb
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\obj\Debug\net8.0\MapleLeaf.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\obj\Debug\net8.0\MapleLeaf.AssemblyInfoInputs.cache
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\obj\Debug\net8.0\MapleLeaf.AssemblyInfo.cs
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\obj\Debug\net8.0\MapleLeaf.csproj.CoreCompileInputs.cache
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\obj\Debug\net8.0\MapleLeaf.dll
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\obj\Debug\net8.0\refint\MapleLeaf.dll
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\obj\Debug\net8.0\MapleLeaf.pdb
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\obj\Debug\net8.0\MapleLeaf.genruntimeconfig.cache
+C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\obj\Debug\net8.0\ref\MapleLeaf.dll
