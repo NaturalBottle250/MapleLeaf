@@ -13,12 +13,13 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\danie\\RiderProjects\\MapleLeaf\\MapleLeaf\\MapleLeaf.csproj",
+      "projectUniqueName": "C:\\Users\\danie\\Desktop\\TESTS\\MapleLeaf\\MapleLeaf\\MapleLeaf.csproj",
       "projectName": "MapleLeaf",
-      "projectPath": "C:\\Users\\danie\\RiderProjects\\MapleLeaf\\MapleLeaf\\MapleLeaf.csproj",
+      "projectPath": "C:\\Users\\danie\\Desktop\\TESTS\\MapleLeaf\\MapleLeaf\\MapleLeaf.csproj",
       "packagesPath": "C:\\Users\\danie\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\danie\\RiderProjects\\MapleLeaf\\MapleLeaf\\obj\\",
+      "outputPath": "C:\\Users\\danie\\Desktop\\TESTS\\MapleLeaf\\MapleLeaf\\obj\\",
       "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
         "C:\\Users\\danie\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],

@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = MapleLeaf
-build_property.ProjectDir = C:\Users\danie\RiderProjects\MapleLeaf\MapleLeaf\
+build_property.ProjectDir = C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
