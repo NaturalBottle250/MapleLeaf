@@ -17,7 +17,7 @@ public class Scanner
     internal List<Token> ScanTokens()
     {
 
-        while (!LineEnded())
+        while (!FileEnded())
         {
             start = current;
             ScanNextToken();
@@ -34,10 +34,23 @@ public class Scanner
         char character = GetNextChar();
         switch (character)
         {
+            case ' ':
+                case '\t':
+                    case '\r':
+                        break;
+
+            case '/':
+                if (GetMatch('/'))
+                {
+                    while (GetCurrentChar() != '\n' && !FileEnded())
+                        GetNextChar();
+                }
+                else AddToken(TokenType.SLASH);
+                break;
+
             case '+': AddToken(TokenType.PLUS); break;
             case '-': AddToken(TokenType.MINUS); break;
             case '*': AddToken(TokenType.STAR); break;
-            //case '/': AddToken(TokenType.SLASH); break;
             case '%': AddToken(TokenType.MOD); break;
             case ',': AddToken(TokenType.COMMA); break;
             case '.': AddToken(TokenType.DOT); break;
@@ -47,9 +60,18 @@ public class Scanner
             case '{': AddToken(TokenType.LBRACE); break;
             case '}': AddToken(TokenType.RBRACE); break;
             case '\n': line++; break;
+            case '"': AddString(); break;
                 
             default:
-                MapleLeaf.Error(line,$"Unexpected Token {(int)character}");
+                if (char.IsDigit(character))
+                {
+                    AddNumber();
+                }
+                else
+                {
+                    MapleLeaf.Error(line,$"Unexpected Token {(int)character}");
+
+                }
                 break;
         }
 
@@ -59,15 +81,13 @@ public class Scanner
     {
         char character = source[current++];
 
-        if (character == '\r')
-        {
-            if (!LineEnded() && source[current] == '\n')
-            {
-                current++;
-            }
-            character = '\n';
-        }
         return character;
+    }
+
+    private char GetCurrentChar(int offset = 0)
+    {
+        if (FileEnded() || current+offset >= source.Length) return '\0';
+        return source[current+offset];
     }
 
 
@@ -84,7 +104,7 @@ public class Scanner
 
     private bool GetMatch(char character)
     {
-        if (LineEnded()) return false;
+        if (FileEnded()) return false;
         
         if(source[current] != character) return false;
 
@@ -93,7 +113,51 @@ public class Scanner
 
     }
 
-    private bool LineEnded()
+
+    private void AddString()
+    {
+        int currentLine = line;
+        while (GetCurrentChar() != '"' && !FileEnded())
+        {
+            if (GetCurrentChar() == '\n') line++;
+            GetNextChar();
+        }
+
+        if (FileEnded())
+        {
+            MapleLeaf.Error(currentLine,$"Unterminated string");
+            return;
+        }
+        AddToken(TokenType.STRING, (source.Substring(start+1, current-start-1)));
+        GetNextChar();
+
+    }
+
+    private void AddNumber()
+    {
+        while(char.IsDigit(GetCurrentChar()))
+            GetNextChar();
+
+        bool isFloat = false;
+        if (GetCurrentChar() == '.' && char.IsDigit(GetCurrentChar(1)))
+        {
+            isFloat = true;
+            GetNextChar();
+            
+            while(char.IsDigit(GetCurrentChar()))
+                GetNextChar();
+        }
+        
+        string value = source.Substring(start, current-start);
+        if (isFloat)
+        {
+            AddToken(TokenType.FLOAT, value);
+            return;
+        }
+        AddToken(TokenType.INT, value);
+
+    }
+    private bool FileEnded()
     {
         return current >= source.Length;
     }
