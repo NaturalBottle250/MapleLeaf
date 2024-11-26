@@ -27,3 +27,8 @@ C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\obj\Debug\net8.0\refint\MapleLe
 C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\obj\Debug\net8.0\MapleLeaf.pdb
 C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\obj\Debug\net8.0\MapleLeaf.genruntimeconfig.cache
 C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\obj\Debug\net8.0\ref\MapleLeaf.dll
+C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\src\net8.0\MapleLeaf.exe
+C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\src\net8.0\MapleLeaf.deps.json
+C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\src\net8.0\MapleLeaf.runtimeconfig.json
+C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\src\net8.0\MapleLeaf.dll
+C:\Users\danie\Desktop\TESTS\MapleLeaf\MapleLeaf\src\net8.0\MapleLeaf.pdb

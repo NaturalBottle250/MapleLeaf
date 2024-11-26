@@ -46,9 +46,10 @@ public class Scanner
             case ')': AddToken(TokenType.RPAREN); break;
             case '{': AddToken(TokenType.LBRACE); break;
             case '}': AddToken(TokenType.RBRACE); break;
+            case '\n': line++; break;
                 
             default:
-                MapleLeaf.Error(line,"Unexpected Token");
+                MapleLeaf.Error(line,$"Unexpected Token {(int)character}");
                 break;
         }
 
@@ -56,7 +57,17 @@ public class Scanner
 
     private char GetNextChar()
     {
-        return source[current++];
+        char character = source[current++];
+
+        if (character == '\r')
+        {
+            if (!LineEnded() && source[current] == '\n')
+            {
+                current++;
+            }
+            character = '\n';
+        }
+        return character;
     }
 
 
@@ -67,7 +78,7 @@ public class Scanner
 
     private void AddToken(TokenType tokenType, object? literal)
     {
-        String text = source.Substring(start, current);
+        String text = source.Substring(start, current-start);
         tokens.Add(new Token(tokenType, text, literal!, line));
     }
 
