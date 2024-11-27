@@ -9,4 +9,8 @@ public class GroupingExpression : Expression
         this.expression = expression;
     }
 
+    public override T Accept<T>(IVisitor<T> visitor)
+    {
+        return visitor.VisitGrouping(this);
+    }
 }

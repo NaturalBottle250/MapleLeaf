@@ -11,5 +11,9 @@ public class UnaryExpression : Expression
         this.operatorToken = operatorToken;
         this.operand = operand;
     }
-    
+
+    public override T Accept<T>(IVisitor<T> visitor)
+    {
+        return visitor.VisitUnary(this);
+    }
 }

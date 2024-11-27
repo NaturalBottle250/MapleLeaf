@@ -8,4 +8,9 @@ public class LiteralExpression : Expression
     {
         this.value = value;
     }
+
+    public override T Accept<T>(IVisitor<T> visitor)
+    {
+        return visitor.VisitLiteral(this);
+    }
 }

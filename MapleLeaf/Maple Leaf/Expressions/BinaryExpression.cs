@@ -14,4 +14,8 @@ public class BinaryExpression : Expression
         this.right = right;
     }
 
+    public override T Accept<T>(IVisitor<T> visitor)
+    {
+        return visitor.VisitBinary(this);
+    }
 }
