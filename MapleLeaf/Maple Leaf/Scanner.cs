@@ -2,10 +2,36 @@
 
 public class Scanner
 {
+
+    private static readonly Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>()
+    {
+        { "and", TokenType.AND },
+        { "break", TokenType.BREAK },
+        { "class", TokenType.CLASS },
+        { "continue", TokenType.CONTINUE },
+        { "else", TokenType.ELSE },
+        { "false", TokenType.FALSE },
+        { "float", TokenType.FLOAT },
+        { "for", TokenType.FOR },
+        { "fun", TokenType.FUN },
+        { "if", TokenType.IF },
+        { "int", TokenType.INT },
+        { "null", TokenType.NULL },
+        { "or", TokenType.OR },
+        { "return", TokenType.RETURN },
+        { "string", TokenType.STRING},
+        { "super", TokenType.SUPER },
+        { "this", TokenType.THIS },
+        { "true", TokenType.TRUE },
+        { "var", TokenType.VAR },
+        { "void", TokenType.VOID },
+        { "while", TokenType.WHILE }
+    };
+
     private readonly string source;
     private readonly List<Token> tokens = new List<Token>();
-    private int start = 0;
-    private int current = 0;
+    private int start;
+    private int current;
     private int line = 1;
 
 
@@ -55,10 +81,18 @@ public class Scanner
             case ',': AddToken(TokenType.COMMA); break;
             case '.': AddToken(TokenType.DOT); break;
             case ';': AddToken(TokenType.SEMICOLON); break;
+            case ':': AddToken(TokenType.COLON); break;
             case '(': AddToken(TokenType.LPAREN); break;
             case ')': AddToken(TokenType.RPAREN); break;
             case '{': AddToken(TokenType.LBRACE); break;
             case '}': AddToken(TokenType.RBRACE); break;
+            case '!': AddToken(GetMatch('=')? TokenType.BANG_EQUAL : TokenType.BANG); break;
+            case '=': AddToken(GetMatch('=')? TokenType.EQUAL_EQUAL : TokenType.ASSIGN); break;
+            case '<': AddToken(GetMatch('=')? TokenType.LESS_EQUAL : TokenType.LESS); break;
+            case '>': AddToken(GetMatch('=')? TokenType.GREATER_EQUAL : TokenType.GREATER); break;
+
+
+
             case '\n': line++; break;
             case '"': AddString(); break;
                 
@@ -66,6 +100,10 @@ public class Scanner
                 if (char.IsDigit(character))
                 {
                     AddNumber();
+                }
+                else if (char.IsLetter(character))
+                {
+                    AddIdentifier();
                 }
                 else
                 {
@@ -96,9 +134,9 @@ public class Scanner
         AddToken(tokenType, null);
     }
 
-    private void AddToken(TokenType tokenType, object? literal)
+    private void AddToken(TokenType tokenType, object? literal, int offset = 0)
     {
-        String text = source.Substring(start, current-start);
+        String text = source.Substring(start+offset, current-start-offset);
         tokens.Add(new Token(tokenType, text, literal!, line));
     }
 
@@ -128,7 +166,7 @@ public class Scanner
             MapleLeaf.Error(currentLine,$"Unterminated string");
             return;
         }
-        AddToken(TokenType.STRING, (source.Substring(start+1, current-start-1)));
+        AddToken(TokenType.STRING_VALUE, (source.Substring(start+1, current-start-1)),1);
         GetNextChar();
 
     }
@@ -151,12 +189,29 @@ public class Scanner
         string value = source.Substring(start, current-start);
         if (isFloat)
         {
-            AddToken(TokenType.FLOAT, value);
+            AddToken(TokenType.FLOAT_VALUE, value);
             return;
         }
-        AddToken(TokenType.INT, value);
+        AddToken(TokenType.INT_VALUE, value);
 
     }
+
+    private void AddIdentifier()
+    {
+        while (char.IsLetterOrDigit(GetCurrentChar())) GetNextChar();
+        string value = source.Substring(start, current-start);
+        
+        TokenType tokenType;
+
+        if (keywords.ContainsKey(value))
+            tokenType = keywords[value];
+        else
+            tokenType = TokenType.IDENTIFIER;
+
+        AddToken(tokenType);
+        
+    }
+    
     private bool FileEnded()
     {
         return current >= source.Length;

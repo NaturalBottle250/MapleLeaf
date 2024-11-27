@@ -54,7 +54,8 @@ class MapleLeaf
         List<Token> tokens = scanner.ScanTokens();
         
         foreach(Token token in tokens)
-            Console.WriteLine(token);
+            //Console.WriteLine(token);
+            token.PrintColored();
     }
     
     /// <summary>
@@ -90,4 +91,5 @@ class MapleLeaf
         Run(content);
 
     }
+    
 }
