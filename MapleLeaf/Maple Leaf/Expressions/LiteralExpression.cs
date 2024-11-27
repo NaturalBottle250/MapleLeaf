@@ -2,7 +2,7 @@
 
 public class LiteralExpression : Expression
 {
-    readonly object value;
+    public readonly object? value;
 
     public LiteralExpression(object value)
     {

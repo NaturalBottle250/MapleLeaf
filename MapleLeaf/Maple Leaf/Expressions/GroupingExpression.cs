@@ -2,7 +2,7 @@
 
 public class GroupingExpression : Expression
 {
-    readonly Expression expression;
+    public readonly Expression expression;
 
     public GroupingExpression(Expression expression)
     {

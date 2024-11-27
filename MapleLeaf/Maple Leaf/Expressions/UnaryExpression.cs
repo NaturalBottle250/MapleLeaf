@@ -2,8 +2,8 @@
 
 public class UnaryExpression : Expression
 {
-    readonly Token operatorToken;
-    readonly Expression operand;
+    public readonly Token operatorToken;
+    public readonly Expression operand;
 
 
     public UnaryExpression(Token operatorToken, Expression operand)

@@ -8,7 +8,18 @@ class MapleLeaf
         Console.WriteLine("Hello, World!");
         //Error(4,"Error");
         
-        OpenFile("test.mlf");
+        //OpenFile("test.mlf");
+        
+        
+        Expression expression = new BinaryExpression(
+            new UnaryExpression(
+                new Token(TokenType.MINUS, "-", null, 1),
+                new LiteralExpression(123)),
+            new Token(TokenType.STAR, "*", null, 1),
+            new GroupingExpression(
+                new LiteralExpression(45.67)));
+        Console.WriteLine(new ASTPrinter().Print(expression));
+        
 
     }
 
