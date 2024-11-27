@@ -4,7 +4,7 @@ public class LiteralExpression : Expression
 {
     public readonly object? value;
 
-    public LiteralExpression(object value)
+    public LiteralExpression(object? value)
     {
         this.value = value;
     }

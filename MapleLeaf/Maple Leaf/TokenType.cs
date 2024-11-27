@@ -15,7 +15,7 @@ public enum TokenType
     
     AND, OR, TRUE, FALSE, IF, ELSE, NULL, VAR, FOR, WHILE, BASE, THIS, RETURN,
     
-    FUN, CLASS, SUPER,
+    FUN, CLASS, SUPER, PRINT,
     
     BREAK, CONTINUE,
     

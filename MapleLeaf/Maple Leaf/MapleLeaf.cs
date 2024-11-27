@@ -8,7 +8,7 @@ class MapleLeaf
         Console.WriteLine("Hello, World!");
         //Error(4,"Error");
         
-        //OpenFile("test.mlf");
+        OpenFile("test.mlf");
         
         
         Expression expression = new BinaryExpression(
@@ -18,7 +18,7 @@ class MapleLeaf
             new Token(TokenType.STAR, "*", null, 1),
             new GroupingExpression(
                 new LiteralExpression(45.67)));
-        Console.WriteLine(new ASTPrinter().Print(expression));
+        //Console.WriteLine(new ASTPrinter().Print(expression));
         
 
     }
@@ -55,6 +55,15 @@ class MapleLeaf
         Console.ResetColor();
     }
 
+
+    public static void Error(Token token, string message)
+    {
+        hasError = true;
+        if(token.tokenType == TokenType.EOF)
+            Report(" at end", message, token.lineNumber);
+        else Report(" at '" + token.lexeme + "'", message, token.lineNumber);
+    }
+
     /// <summary>
     /// Runs a MapleLeaf source file
     /// </summary>
@@ -62,11 +71,14 @@ class MapleLeaf
     public static void Run(string sourceString)
     {
         Scanner scanner = new Scanner(sourceString);
-        List<Token> tokens = scanner.ScanTokens();
         
-        foreach(Token token in tokens)
-            //Console.WriteLine(token);
-            token.PrintColored();
+        List<Token> tokens = scanner.ScanTokens();
+        Parser parser = new Parser(tokens);
+        Expression expression = parser.Parse();
+        if(hasError) return;
+        Console.WriteLine(new ASTPrinter().Print(expression));
+        
+        //foreach(Token token in tokens) token.PrintColored();
     }
     
     /// <summary>
