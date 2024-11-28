@@ -309,4 +309,30 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         environment.DefineVariable(variableStatement.name.lexeme, variableStatement.type.lexeme, value);
         return null;
     }
+
+    public object VisitBlockStatement(Block blockStatement)
+    {
+        ExecuteBlock(blockStatement.statements, new Environment(environment));
+        
+        return null;
+    }
+
+    private void ExecuteBlock(List<Statement> statements, Environment environment)
+    {
+        Environment previous = this.environment;
+
+        try
+        {
+            this.environment = environment;
+
+            foreach (Statement statement in statements)
+            {
+                Execute(statement);
+            }
+        }
+        finally
+        {
+            this.environment = previous;
+        }
+    }
 }

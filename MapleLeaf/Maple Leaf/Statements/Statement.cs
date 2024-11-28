@@ -9,6 +9,8 @@ public abstract class Statement
         R VisitPrintStatement(PrintStatement printStatement);
         
         R VisitVariableStatement(VariableStatement variableStatement);
+        
+        R VisitBlockStatement(Block blockStatement);
     }
     
     

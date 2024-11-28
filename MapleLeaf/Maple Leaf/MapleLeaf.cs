@@ -87,7 +87,7 @@ class MapleLeaf
         List<Statement> statements = parser.Parse();
         if(hasError) return;
         
-        //foreach(Token token in tokens) token.PrintColored();
+        foreach(Token token in tokens) token.PrintColored();
 
         
         interpreter.Interpret(statements);
@@ -137,7 +137,7 @@ class MapleLeaf
     public static void RuntimeError(Interpreter.RuntimeError error)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.Error.WriteLine($"Error at line {error.Token.lineNumber}: {error.Message}");
+        Console.Error.WriteLine($"Error on line {error.Token.lineNumber}: {error.Message}");
         hasRuntimeError = true;
         
     }

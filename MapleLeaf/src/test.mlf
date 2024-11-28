@@ -1,13 +1,7 @@
 ﻿print "Hello, World!";
-var x: int;
-print x;
-x = 5;
-print x + 1;
-x = x + 1;
-
-print "x = " + x;
-
-var y: int = x;
-print y + 1.03;
-
-y = 1.2;
+var a:string = "Global a";
+{
+var a:int = 4;
+print a;
+}
+print a;

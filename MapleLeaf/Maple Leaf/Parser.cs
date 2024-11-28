@@ -97,7 +97,22 @@ public class Parser
     private Statement Statement()
     {
         if (Match(TokenType.PRINT)) return PrintStatement();
+        if (Match(TokenType.LBRACE)) return new Block(Block());
         return Expressionstatement();
+    }
+
+    private List<Statement> Block()
+    {
+        Console.WriteLine("MEOW");
+        List<Statement> statements = new List<Statement>();
+        while ((!Check(TokenType.RBRACE) && !IsAtEnd()))
+        {
+            statements.Add(Declaration());
+        }
+
+        Consume(TokenType.RBRACE, "Expected '}' after block.");
+
+        return statements;
     }
 
     private Statement PrintStatement()

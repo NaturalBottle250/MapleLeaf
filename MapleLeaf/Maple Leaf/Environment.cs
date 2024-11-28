@@ -2,8 +2,18 @@
 
 public class Environment
 {
+    internal readonly Environment? parent;
     private readonly Dictionary<string, (string Type, object Value)> variables = new();
 
+
+    internal Environment()
+    {
+        parent = null;
+    }
+    internal Environment(Environment parent)
+    {
+        this.parent = parent;
+    }
     internal void DefineVariable(string name, string type, object value)
     {
         variables[name] = (type, value);
@@ -16,6 +26,7 @@ public class Environment
             return variable.Value; // Only return the value part of the tuple
         }
 
+        if(parent!=null) return parent.GetVariable(name);
         throw new Interpreter.RuntimeError(name, "Undefined variable '" + name.lexeme + "'");
     }
 
@@ -28,6 +39,11 @@ public class Environment
         }
         else
         {
+            if (parent != null)
+            {
+                parent.AssignVariable(name, value);
+                return;
+            }
             throw new Interpreter.RuntimeError(name, "Undefined variable '" + name.lexeme + "'");
         }
     }
