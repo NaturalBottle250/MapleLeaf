@@ -107,7 +107,7 @@ public class Parser
 
 
     //Flag
-    private Expression? Primary()
+    private Expression Primary()
     {
         if (Match(TokenType.FALSE))
             return new LiteralExpression(false);

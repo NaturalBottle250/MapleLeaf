@@ -189,10 +189,10 @@ public class Scanner
         string value = source.Substring(start, current-start);
         if (isFloat)
         {
-            AddToken(TokenType.FLOAT_VALUE, value);
+            AddToken(TokenType.FLOAT_VALUE, float.Parse(value));
             return;
         }
-        AddToken(TokenType.INT_VALUE, value);
+        AddToken(TokenType.INT_VALUE, int.Parse(value));
 
     }
 

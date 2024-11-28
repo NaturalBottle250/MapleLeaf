@@ -13,4 +13,9 @@ public class LiteralExpression : Expression
     {
         return visitor.VisitLiteral(this);
     }
+
+    public override string ToString()
+    {
+        return value?.ToString() ?? "null";
+    }
 }

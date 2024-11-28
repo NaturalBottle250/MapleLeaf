@@ -2,10 +2,13 @@
 
 class MapleLeaf
 {
-    private static bool hasError = false;
+    private static readonly Interpreter interpreter = new Interpreter();
+    private static bool hasError, hasRuntimeError;
     static void Main(string[] args)
     {
         Console.WriteLine("Hello, World!");
+        
+        //Console.WriteLine("Please enter a number: " + 1);
         //Error(4,"Error");
         
         OpenFile("test.mlf");
@@ -76,9 +79,13 @@ class MapleLeaf
         Parser parser = new Parser(tokens);
         Expression expression = parser.Parse();
         if(hasError) return;
-        Console.WriteLine(new ASTPrinter().Print(expression));
         
-        //foreach(Token token in tokens) token.PrintColored();
+        foreach(Token token in tokens) token.PrintColored();
+
+        interpreter.Interpret(expression);
+        
+        //Console.WriteLine(new ASTPrinter().Print(expression));
+        
     }
     
     /// <summary>
@@ -107,12 +114,24 @@ class MapleLeaf
             Console.WriteLine(e);
         }
         string content = System.Text.Encoding.UTF8.GetString(bytes).Trim();
+        
+        if(hasError) Environment.Exit(65);
+        if(hasRuntimeError) Environment.Exit(70);
 
         if (content.Length > 0 && content[0] == '\uFEFF')
             content = content.Substring(1);
 
         Run(content);
 
+    }
+
+
+    public static void RuntimeError(Interpreter.RuntimeError error)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Error.WriteLine($"{error.Message}\n[line {error.Token.lineNumber}]");
+        hasRuntimeError = true;
+        
     }
     
 }
