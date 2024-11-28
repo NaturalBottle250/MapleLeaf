@@ -123,8 +123,8 @@ class MapleLeaf
         }
         string content = System.Text.Encoding.UTF8.GetString(bytes).Trim();
         
-        //if(hasError) Environment.Exit(65);
-        //if(hasRuntimeError) Environment.Exit(70);
+        if(hasError) System.Environment.Exit(65);
+        if(hasRuntimeError) System.Environment.Exit(70);
 
         if (content.Length > 0 && content[0] == '\uFEFF')
             content = content.Substring(1);
@@ -137,7 +137,7 @@ class MapleLeaf
     public static void RuntimeError(Interpreter.RuntimeError error)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.Error.WriteLine($"{error.Message}\n[line {error.Token.lineNumber}]");
+        Console.Error.WriteLine($"Error at line {error.Token.lineNumber}: {error.Message}");
         hasRuntimeError = true;
         
     }

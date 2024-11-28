@@ -62,7 +62,16 @@ public class Parser
     {
         Token name = Consume(TokenType.IDENTIFIER, "Expected a variable name.");
         Token col = Consume(TokenType.COLON, "Expected a colon after variable name.");
-        Token type = Consume(TokenType.IDENTIFIER, "Expected a variable type.");
+        //Console.WriteLine(GetCurrent().tokenType);
+        //Token type = Consume(TokenType.IDENTIFIER, "Expected a variable type.");
+        Token typeToken = GetCurrent();
+
+        if (typeToken.tokenType == TokenType.IDENTIFIER || IsKeywordType(typeToken.tokenType)) Advance();
+        else
+        {
+            throw Error(name, "Expected a valid variable type.");
+        }
+        
         
         Expression initializer = null;
         if (Match(TokenType.ASSIGN))
@@ -72,10 +81,18 @@ public class Parser
         
         Consume(TokenType.SEMICOLON, "Expected a ';' after variable declaration.");
         
-        return new VariableStatement(name, type, initializer);
+        return new VariableStatement(name, typeToken, initializer);
     }
     
-    
+    private bool IsKeywordType(TokenType tokenType)
+    {
+        return tokenType == TokenType.INT ||
+               tokenType == TokenType.FLOAT ||
+               tokenType == TokenType.STRING ||
+               tokenType == TokenType.BOOL ||
+               tokenType == TokenType.VOID;
+    }
+
     
     private Statement Statement()
     {
@@ -102,7 +119,30 @@ public class Parser
 
     private Expression Expression()
     {
-        return Equality();
+        return Assignment();
+    }
+
+    private Expression Assignment()
+    {
+        Expression expression = Equality();
+
+        if (Match(TokenType.ASSIGN))
+        {
+            Token equals = GetPrevious();
+            Expression value = Assignment();
+
+            if (expression is VariableExpression variableExpression)
+            {
+                Token name = variableExpression.name;
+                
+                return new AssignExpression(name ,value);
+            }
+            
+            Error(equals, "Expected a valid variable assignment.");
+        }
+
+
+        return expression;
     }
 
     private Expression Equality()

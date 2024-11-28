@@ -1,3 +1,13 @@
 ﻿print "Hello, World!";
-print !true
-print 2 + 1;
+var x: int;
+print x;
+x = 5;
+print x + 1;
+x = x + 1;
+
+print "x = " + x;
+
+var y: int = x;
+print y + 1.03;
+
+y = 1.2;

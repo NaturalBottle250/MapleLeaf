@@ -13,6 +13,8 @@ public abstract class Expression
         
         T VisitVariable(VariableExpression expression);
         
+        T VisitAssignment(AssignExpression expression);
+        
         
     }
     

@@ -32,7 +32,12 @@ public class ASTPrinter : Expression.IVisitor<string>
 
     public string VisitVariable(VariableExpression expression)
     {
-        throw new NotImplementedException();
+        return "";
+    }
+
+    public string VisitAssignment(AssignExpression expression)
+    {
+        return "";
     }
 
 

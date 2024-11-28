@@ -4,6 +4,17 @@ namespace MapleLeaf;
 
 public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object>
 {
+    private static readonly Dictionary<string, object> DefaultValues = new()
+    {
+        { "int", 0 },
+        { "float", 0.0f },
+        { "string", "" },
+        { "bool", false }
+        // Add more types as needed
+    };
+    
+    
+    private Environment environment = new Environment();
     public  class RuntimeError : Exception
     {
         readonly Token token;
@@ -30,7 +41,7 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         catch (RuntimeError e)
         {
             MapleLeaf.RuntimeError(e);
-            throw;
+            return;
         }
     }
 
@@ -43,8 +54,6 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
     {
         if(result == null) return "null";
         
-        
-
         return result.ToString();
     }
     public object VisitLiteral(LiteralExpression expression)
@@ -119,10 +128,37 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
 
     public object VisitVariable(VariableExpression expression)
     {
-        throw new NotImplementedException();
+        return environment.GetVariable(expression.name);
     }
 
+    public object VisitAssignment(AssignExpression expression)
+    {
+        object value = Evaluate(expression.value);
+        
+        string expected = environment.GetVariableType(expression.name);
 
+        if (!IsMatchingType(expected, value))
+        {
+            throw new RuntimeError(expression.name, $"Type Assignment mismatch: expected \"{expected}\", got \"{GetTypeName(value)}\".");
+        }
+        environment.AssignVariable(expression.name,value);
+
+        return value;
+    }
+
+    private string GetTypeName(object value)
+    {
+        if (value is int) return "int";
+        if (value is float) return "float";
+        if (value is string) return "string";
+        if (value is bool) return "bool";
+        return value.GetType().Name;
+    }
+
+    private bool IsMatchingType(string expected, object value)
+    {
+        return GetTypeName(value).ToLower().Equals(expected.ToLower());
+    }
     private object Add(Token operatorToken, object left, object right)
     {
         if (left is int && right is int)
@@ -253,18 +289,24 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
     public object VisitPrintStatement(PrintStatement printStatement)
     {
         object value = Evaluate(printStatement.expression);
+        //Console.WriteLine("HI");
+        //Console.WriteLine(value.GetType());
         Console.WriteLine(Stringify(value));
         return null;
     }
 
     public object VisitVariableStatement(VariableStatement variableStatement)
     {
+        
         object? value = null;
         if (variableStatement.initializer != null)
         {
             value = Evaluate(variableStatement.initializer);
         }
-
+        else
+            value = DefaultValues.TryGetValue(variableStatement.type.lexeme.ToLower(),
+                                              out var defaultValue) ? defaultValue : null;
+        environment.DefineVariable(variableStatement.name.lexeme, variableStatement.type.lexeme, value);
         return null;
     }
 }
