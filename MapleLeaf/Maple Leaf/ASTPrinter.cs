@@ -29,8 +29,13 @@ public class ASTPrinter : Expression.IVisitor<string>
     {
         return Parenthesize("group", expression.expression);
     }
-    
-    
+
+    public string VisitVariable(VariableExpression expression)
+    {
+        throw new NotImplementedException();
+    }
+
+
     private string Parenthesize(string name, params Expression[] expressions)
     {
         StringBuilder builder = new StringBuilder();

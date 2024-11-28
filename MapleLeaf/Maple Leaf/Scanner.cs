@@ -18,6 +18,7 @@ public class Scanner
         { "int", TokenType.INT },
         { "null", TokenType.NULL },
         { "or", TokenType.OR },
+        { "print", TokenType.PRINT },
         { "return", TokenType.RETURN },
         { "string", TokenType.STRING},
         { "super", TokenType.SUPER },

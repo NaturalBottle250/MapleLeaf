@@ -1,9 +1,14 @@
 ﻿using System.Diagnostics;
+using MapleLeaf.Statements;
 
 namespace MapleLeaf;
 
 public class Parser
 {
+    private List<TokenType> types = new List<TokenType>()
+    {
+        TokenType.INT, TokenType.FLOAT, TokenType.STRING, TokenType.BOOL
+    };
     
     private  class ParserError : Exception
     {
@@ -18,18 +23,81 @@ public class Parser
         this.tokens = tokens;
     }
 
-    public Expression Parse()
+    public List<Statement> Parse()
     {
         try
         {
-            return Expression();
+            List<Statement> statements = new List<Statement>();
+            while (!IsAtEnd())
+            {
+                statements.Add(Declaration());
+            }
+
+            return statements;
         }
         catch (ParserError e)
         {
+            //MapleLeaf.Error(e);
+        }
+        return new List<Statement>();
+    }
+
+    private Statement Declaration()
+    {
+        try
+        {
+            if (Match(TokenType.VAR)) return VariableDeclaration();
+            
+            return Statement();
+
+        }
+        catch (ParserError e)
+        {
+            Synchronize();
             return null;
         }
     }
 
+    private Statement VariableDeclaration()
+    {
+        Token name = Consume(TokenType.IDENTIFIER, "Expected a variable name.");
+        Token col = Consume(TokenType.COLON, "Expected a colon after variable name.");
+        Token type = Consume(TokenType.IDENTIFIER, "Expected a variable type.");
+        
+        Expression initializer = null;
+        if (Match(TokenType.ASSIGN))
+        {
+            initializer = Expression();
+        }
+        
+        Consume(TokenType.SEMICOLON, "Expected a ';' after variable declaration.");
+        
+        return new VariableStatement(name, type, initializer);
+    }
+    
+    
+    
+    private Statement Statement()
+    {
+        if (Match(TokenType.PRINT)) return PrintStatement();
+        return Expressionstatement();
+    }
+
+    private Statement PrintStatement()
+    {
+        Expression expression = Expression();
+        Consume(TokenType.SEMICOLON, "Expected ';' after value.");
+
+        return new PrintStatement(expression);
+    }
+
+    private Statement Expressionstatement()
+    {
+        Expression expression = Expression();
+        Consume(TokenType.SEMICOLON, "Expected ';' after expression.");
+
+        return new ExpressionStmt(expression);
+    }
 
 
     private Expression Expression()
@@ -109,13 +177,14 @@ public class Parser
     //Flag
     private Expression Primary()
     {
+        if (Match(TokenType.IDENTIFIER))
+            return new VariableExpression(GetPrevious());
         if (Match(TokenType.FALSE))
             return new LiteralExpression(false);
         if(Match(TokenType.TRUE))
             return new LiteralExpression(true);
         if(Match(TokenType.NULL))
             return new LiteralExpression(null);
-
         if (Match(TokenType.INT_VALUE, TokenType.FLOAT_VALUE, TokenType.STRING_VALUE))
         {
             return new LiteralExpression(GetPrevious().literal);

@@ -1,6 +1,8 @@
-﻿namespace MapleLeaf;
+﻿using MapleLeaf.Statements;
 
-public class Interpreter: Expression.IVisitor<object>
+namespace MapleLeaf;
+
+public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object>
 {
     public  class RuntimeError : Exception
     {
@@ -15,18 +17,26 @@ public class Interpreter: Expression.IVisitor<object>
     }
 
     //Flag
-    public void Interpret(Expression expression)
+    public void Interpret(List<Statement> statements)
     {
         try
         {
-            object result = Evaluate(expression);
-            Console.WriteLine(Stringify(result));
+            foreach (Statement statement in statements)
+            {
+                Execute(statement);
+                
+            }
         }
         catch (RuntimeError e)
         {
             MapleLeaf.RuntimeError(e);
             throw;
         }
+    }
+
+    private void Execute(Statement statement)
+    {
+        statement.Accept(this);
     }
 
     private string Stringify(object? result)
@@ -105,6 +115,11 @@ public class Interpreter: Expression.IVisitor<object>
     public object VisitGrouping(GroupingExpression expression)
     {
         return Evaluate(expression.expression);
+    }
+
+    public object VisitVariable(VariableExpression expression)
+    {
+        throw new NotImplementedException();
     }
 
 
@@ -225,5 +240,31 @@ public class Interpreter: Expression.IVisitor<object>
     private object Evaluate(Expression expression)
     {
         return expression.Accept(this);
+    }
+
+    //Statements
+    public object VisitExpressionStatement(ExpressionStmt expression)
+    {
+        Evaluate(expression.expression);
+        
+        return null;
+    }
+
+    public object VisitPrintStatement(PrintStatement printStatement)
+    {
+        object value = Evaluate(printStatement.expression);
+        Console.WriteLine(Stringify(value));
+        return null;
+    }
+
+    public object VisitVariableStatement(VariableStatement variableStatement)
+    {
+        object? value = null;
+        if (variableStatement.initializer != null)
+        {
+            value = Evaluate(variableStatement.initializer);
+        }
+
+        return null;
     }
 }

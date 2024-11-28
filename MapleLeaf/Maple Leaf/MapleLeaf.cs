@@ -1,4 +1,6 @@
-﻿namespace MapleLeaf;
+﻿using MapleLeaf.Statements;
+using System;
+namespace MapleLeaf;
 
 class MapleLeaf
 {
@@ -6,7 +8,7 @@ class MapleLeaf
     private static bool hasError, hasRuntimeError;
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        //Console.WriteLine("Hello, World!");
         
         //Console.WriteLine("Please enter a number: " + 1);
         //Error(4,"Error");
@@ -59,6 +61,11 @@ class MapleLeaf
     }
 
 
+    /// <summary>
+    /// Reports Errors to the Console
+    /// </summary>
+    /// <param name="token"> Failed Token</param>
+    /// <param name="message">Error Message</param>
     public static void Error(Token token, string message)
     {
         hasError = true;
@@ -77,12 +84,13 @@ class MapleLeaf
         
         List<Token> tokens = scanner.ScanTokens();
         Parser parser = new Parser(tokens);
-        Expression expression = parser.Parse();
+        List<Statement> statements = parser.Parse();
         if(hasError) return;
         
-        foreach(Token token in tokens) token.PrintColored();
+        //foreach(Token token in tokens) token.PrintColored();
 
-        interpreter.Interpret(expression);
+        
+        interpreter.Interpret(statements);
         
         //Console.WriteLine(new ASTPrinter().Print(expression));
         
@@ -115,8 +123,8 @@ class MapleLeaf
         }
         string content = System.Text.Encoding.UTF8.GetString(bytes).Trim();
         
-        if(hasError) Environment.Exit(65);
-        if(hasRuntimeError) Environment.Exit(70);
+        //if(hasError) Environment.Exit(65);
+        //if(hasRuntimeError) Environment.Exit(70);
 
         if (content.Length > 0 && content[0] == '\uFEFF')
             content = content.Substring(1);

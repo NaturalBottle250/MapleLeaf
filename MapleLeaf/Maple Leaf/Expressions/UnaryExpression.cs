@@ -12,7 +12,7 @@ public class UnaryExpression : Expression
         this.operand = operand;
     }
 
-    public override T Accept<T>(IVisitor<T> visitor)
+    internal override T Accept<T>(IVisitor<T> visitor)
     {
         return visitor.VisitUnary(this);
     }
