@@ -1,7 +1,27 @@
 ﻿print "Hello, World!";
-var a:string = "Global a";
-{
+
+
+var s: string;
+
+print s;
 var a:int = 4;
-print a;
+{
+    var a:float = 2.5;
+    print a;
 }
-print a;
+var b:float = 3.14;
+a = a - 1;
+if( a > 4 and b < 3)
+{
+    print "a is larger than 4!";
+}
+else if( a == 4)
+{
+print "A is 4!!!";
+}
+else
+{
+    print "a is not larger than 4!";
+    a = 5;
+}
+print "a is now " + a;

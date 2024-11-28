@@ -15,6 +15,8 @@ public abstract class Expression
         
         T VisitAssignment(AssignExpression expression);
         
+        T VisitLogical(LogicalExpression expression);
+        
         
     }
     

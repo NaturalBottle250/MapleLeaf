@@ -11,6 +11,8 @@ public abstract class Statement
         R VisitVariableStatement(VariableStatement variableStatement);
         
         R VisitBlockStatement(Block blockStatement);
+        
+        R VisitIfStatement(If ifStatement);
     }
     
     

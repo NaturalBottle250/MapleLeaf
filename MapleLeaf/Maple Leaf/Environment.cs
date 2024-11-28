@@ -27,7 +27,7 @@ public class Environment
         }
 
         if(parent!=null) return parent.GetVariable(name);
-        throw new Interpreter.RuntimeError(name, "Undefined variable '" + name.lexeme + "'");
+        throw new Interpreter.RuntimeError(name, "Undefined variable to get '" + name.lexeme + "'");
     }
 
     internal void AssignVariable(Token name, object value)
@@ -44,7 +44,7 @@ public class Environment
                 parent.AssignVariable(name, value);
                 return;
             }
-            throw new Interpreter.RuntimeError(name, "Undefined variable '" + name.lexeme + "'");
+            throw new Interpreter.RuntimeError(name, "Undefined variable to assign '" + name.lexeme + "'");
         }
     }
 
@@ -54,8 +54,9 @@ public class Environment
         {
             return variable.Type;
         }
+        if(parent!=null) return parent.GetVariableType(name);
 
-        throw new Interpreter.RuntimeError(name, "Undefined variable '" + name.lexeme + "'");
+        throw new Interpreter.RuntimeError(name, "Undefined variable to get '" + name.lexeme + "'");
     }
 }
 

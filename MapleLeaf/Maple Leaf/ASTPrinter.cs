@@ -40,6 +40,11 @@ public class ASTPrinter : Expression.IVisitor<string>
         return "";
     }
 
+    public string VisitLogical(LogicalExpression expression)
+    {
+        throw new NotImplementedException();
+    }
+
 
     private string Parenthesize(string name, params Expression[] expressions)
     {

@@ -10,7 +10,7 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         { "float", 0.0f },
         { "string", "" },
         { "bool", false }
-        // Add more types as needed
+        
     };
     
     
@@ -103,13 +103,14 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
             case TokenType.SLASH:
                 return Divide(expression.operatorToken, left, right);
             case TokenType.GREATER:
-                return (float)left > (float)right;
+                //return (float)left > (float)right;
+            return (float.Parse(Stringify(left)) > float.Parse(Stringify(right)));
             case TokenType.LESS:
-                return (float)left < (float)right;
+                return (float.Parse(Stringify(left)) < float.Parse(Stringify(right)));
             case TokenType.GREATER_EQUAL:
-                return (float)left >= (float)right;
+                return (float.Parse(Stringify(left)) >= float.Parse(Stringify(right)));
             case TokenType.LESS_EQUAL:
-                return (float)left <= (float)right;
+                return (float.Parse(Stringify(left)) <= float.Parse(Stringify(right)));
             case TokenType.BANG_EQUAL:
                 return !IsEqual(left, right);
             case TokenType.EQUAL_EQUAL:
@@ -144,6 +145,22 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         environment.AssignVariable(expression.name,value);
 
         return value;
+    }
+
+    public object VisitLogical(LogicalExpression expression)
+    {
+        object left = Evaluate(expression.left);
+
+        if (expression.operatorToken.tokenType == TokenType.OR)
+        {
+            if (IsTF(left)) return left;
+        }
+        else
+        {
+            if (!IsTF(left)) return left;
+        }
+        
+        return Evaluate(expression.right);
     }
 
     private string GetTypeName(object value)
@@ -317,13 +334,23 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         return null;
     }
 
-    private void ExecuteBlock(List<Statement> statements, Environment environment)
+    public object VisitIfStatement(If ifStatement)
+    {
+        if(IsTF(Evaluate(ifStatement.condition)))
+            Execute(ifStatement.branch);
+        else if(ifStatement.elseBranch != null)
+            Execute(ifStatement.elseBranch);
+        
+        return null;
+    }
+
+    private void ExecuteBlock(List<Statement> statements, Environment env)
     {
         Environment previous = this.environment;
 
         try
         {
-            this.environment = environment;
+            this.environment = env;
 
             foreach (Statement statement in statements)
             {
