@@ -1,6 +1,8 @@
 <H1>The readme is still under construction</H1>
 
 <h3>In the meantime, here are some snippets of already-implemented features</h3>
+  <img src="https://github.com/user-attachments/assets/a18bbb76-10ee-4fa5-a7f7-85a5c91cafb4" alt="Maple Leaf" />
+
 
 ```
 //This is temporary while I implement Objects
@@ -36,3 +38,4 @@ for(var index: int = 0; index < number; index = index + 1)
 }
 
 ```
+![file icon maybe](https://github.com/user-attachments/assets/c57c29c3-302f-4ac1-ab81-d7ef80f8bb46)
