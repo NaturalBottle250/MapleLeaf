@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MapleLeaf")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da13e6c462e665bf6a80dccd14e4a0f9afdf6381")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8287d72502f6485c75d02b42329d860f4971347c")]
 [assembly: System.Reflection.AssemblyProductAttribute("MapleLeaf")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MapleLeaf")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

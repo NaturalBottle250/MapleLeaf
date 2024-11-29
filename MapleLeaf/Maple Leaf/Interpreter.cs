@@ -358,11 +358,12 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         bool varExists;
         try
         {
-            environment.GetVariable(variableStatement.name);
+            environment.GetVariable(variableStatement.name, false);
             varExists = true;
         }
         catch (RuntimeError e)
         {
+            
             varExists = false;
         }
         if(varExists)

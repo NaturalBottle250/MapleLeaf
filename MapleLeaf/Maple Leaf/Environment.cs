@@ -20,14 +20,14 @@ public class Environment
         variables[name] = (type, value);
     }
 
-    internal object GetVariable(Token name)
+    internal object GetVariable(Token name, bool checkParent = true)
     {
         if (variables.TryGetValue(name.lexeme, out var variable))
         {
             return variable.Value; // Only return the value part of the tuple
         }
 
-        if(parent!=null) return parent.GetVariable(name);
+        if(parent!=null && checkParent) return parent.GetVariable(name);
         throw new Interpreter.RuntimeError(name, "Undefined variable to get '" + name.lexeme + "'");
     }
 
