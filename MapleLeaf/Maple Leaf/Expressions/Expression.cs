@@ -17,6 +17,8 @@ public abstract class Expression
         
         T VisitLogical(LogicalExpression expression);
         
+        T VisitCall(CallExpression expression);
+        
         
     }
     

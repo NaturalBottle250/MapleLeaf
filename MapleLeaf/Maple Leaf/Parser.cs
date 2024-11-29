@@ -84,8 +84,9 @@ public class Parser
         return new VariableStatement(name, typeToken, initializer);
     }
     
-    private bool IsKeywordType(TokenType tokenType)
+    private bool IsKeywordType(TokenType tokenType, bool isFunction = false)
     {
+        if(isFunction) return tokenType == TokenType.VOID || IsKeywordType(tokenType);
         return tokenType == TokenType.INT ||
                tokenType == TokenType.FLOAT ||
                tokenType == TokenType.STRING ||
@@ -329,7 +330,44 @@ public class Parser
             
         }
 
-        return Primary();
+        return Call();
+    }
+
+    private Expression Call()
+    {
+        Expression expression = Primary();
+
+        while (true)
+        {
+            if (Match(TokenType.LPAREN))
+            {
+                expression = FinishCall(expression);
+            }
+            else break;
+        }
+        
+        return expression;
+    }
+    
+    private Expression FinishCall(Expression callee)
+    {
+        List<Expression> arguments = new List<Expression>();
+
+        if (!Check(TokenType.RPAREN))
+        {
+            do
+            {
+                if(arguments.Count >= 255)
+                    Error(GetCurrent(), "Too many arguments.");
+                arguments.Add(Expression());
+            }
+            while (Match(TokenType.COMMA));
+        }
+        
+        Token parenToken = Consume(TokenType.RPAREN, "Expected ')' after Arguments.");
+        
+
+        return new CallExpression(callee,parenToken ,arguments);
     }
 
 

@@ -87,8 +87,9 @@ class MapleLeaf
         List<Statement> statements = parser.Parse();
         if(hasError) return;
         
-        foreach(Token token in tokens) token.PrintColored();
+        //foreach(Token token in tokens) token.PrintColored();
 
+        //foreach (Statement state in statements) Console.WriteLine(state);
         
         interpreter.Interpret(statements);
         

@@ -45,6 +45,11 @@ public class ASTPrinter : Expression.IVisitor<string>
         throw new NotImplementedException();
     }
 
+    public string VisitCall(CallExpression expression)
+    {
+        throw new NotImplementedException();
+    }
+
 
     private string Parenthesize(string name, params Expression[] expressions)
     {

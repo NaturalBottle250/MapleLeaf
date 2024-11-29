@@ -164,6 +164,30 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         return Evaluate(expression.right);
     }
 
+    public object VisitCall(CallExpression expression)
+    {
+        object callee = Evaluate(expression.callee);
+        List<object> arguments = new List<object>();
+
+        foreach (Expression argument in expression.arguments)
+        {
+            arguments.Add(Evaluate(argument));
+        }
+        if (!(callee is MLCallable))
+            throw new RuntimeError(expression.paren, "Can only call a function or a class");
+        
+        MLCallable function = (MLCallable)callee;
+
+        if (arguments.Count != function.GetArity())
+        {
+            throw new RuntimeError(expression.paren, $"Expected + {function.GetArity()} arguments but got {arguments.Count}.");
+        }
+
+
+        
+        return function.Call(this, arguments);
+    }
+
     private string GetTypeName(object value)
     {
         if (value is int) return "int";

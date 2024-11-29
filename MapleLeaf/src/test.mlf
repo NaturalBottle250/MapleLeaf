@@ -1,11 +1,5 @@
 ﻿print "Hello, World!";
 
+print 5;
 
-var x: int;
-
-x = 2;
-
-print x;
-
-var x: float;
 
