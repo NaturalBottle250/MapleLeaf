@@ -83,11 +83,13 @@ class MapleLeaf
         Scanner scanner = new Scanner(sourceString);
         
         List<Token> tokens = scanner.ScanTokens();
+        
+        //foreach(Token token in tokens) token.PrintColored();
+
         Parser parser = new Parser(tokens);
         List<Statement> statements = parser.Parse();
         if(hasError) return;
         
-        //foreach(Token token in tokens) token.PrintColored();
 
         //foreach (Statement state in statements) Console.WriteLine(state);
         

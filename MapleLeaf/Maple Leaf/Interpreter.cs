@@ -12,9 +12,14 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         { "bool", false }
         
     };
-    
-    
-    private Environment environment = new Environment();
+
+    public   Environment globals = new Environment();
+    private Environment environment;
+
+    public Interpreter()
+    {
+        environment = globals;
+    }
     public  class RuntimeError : Exception
     {
         readonly Token token;
@@ -171,16 +176,18 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
 
         foreach (Expression argument in expression.arguments)
         {
+            //Console.WriteLine(argument);
             arguments.Add(Evaluate(argument));
         }
         if (!(callee is MLCallable))
             throw new RuntimeError(expression.paren, "Can only call a function or a class");
         
         MLCallable function = (MLCallable)callee;
+        
 
         if (arguments.Count != function.GetArity())
         {
-            throw new RuntimeError(expression.paren, $"Expected + {function.GetArity()} arguments but got {arguments.Count}.");
+            throw new RuntimeError(expression.paren, $"Expected {function.GetArity()} arguments but got {arguments.Count}.");
         }
 
 
@@ -188,7 +195,7 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         return function.Call(this, arguments);
     }
 
-    private string GetTypeName(object value)
+    internal string GetTypeName(object value)
     {
         if (value is int) return "int";
         if (value is float) return "float";
@@ -197,7 +204,7 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         return value.GetType().Name;
     }
 
-    private bool IsMatchingType(string expected, object value)
+    internal bool IsMatchingType(string expected, object value)
     {
         return GetTypeName(value).ToLower().Equals(expected.ToLower());
     }
@@ -324,7 +331,6 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
     public object VisitExpressionStatement(ExpressionStmt expression)
     {
         Evaluate(expression.expression);
-        
         return null;
     }
 
@@ -391,7 +397,15 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         return null;
     }
 
-    private void ExecuteBlock(List<Statement> statements, Environment env)
+    public object VisitFunctionStatement(Function function)
+    {
+        MLFunction mlFunction = new MLFunction(function);
+        environment.DefineVariable(function.name.lexeme, Stringify(function.returnType).ToLower(), mlFunction);
+
+        return null;
+    }
+
+    internal void ExecuteBlock(List<Statement> statements, Environment env)
     {
         Environment previous = this.environment;
 

@@ -15,6 +15,8 @@ public abstract class Statement
         R VisitIfStatement(If ifStatement);
         
         R VisitWhileStatement(While whileStatement);
+        
+        R VisitFunctionStatement(Function function);
     }
     
     

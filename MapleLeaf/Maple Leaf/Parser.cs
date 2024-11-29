@@ -46,6 +46,7 @@ public class Parser
     {
         try
         {
+            if(Match(TokenType.FUN)) return Function("function");
             if (Match(TokenType.VAR)) return VariableDeclaration();
             
             return Statement();
@@ -56,6 +57,64 @@ public class Parser
             Synchronize();
             return null;
         }
+    }
+
+    private Function Function(string kind)
+    {
+        Token name = Consume(TokenType.IDENTIFIER, $"Expected a {kind} name.");
+
+        Consume(TokenType.LPAREN, $"Expected '(' after {kind} name.");
+        
+        List<Token> parameters = new List<Token>(), parameterTypes = new List<Token>();
+
+        if (!Check(TokenType.RPAREN))
+        {
+            do
+            {
+                //Console.WriteLine("New Param");
+                if(parameters.Count >= 255) Error(GetCurrent(), "Too many arguments.");
+                
+                Token paramName = Consume(TokenType.IDENTIFIER, "Expected parameter name");
+                parameters.Add(paramName);
+                //Console.WriteLine("Added Param name " + paramName);
+
+
+                Consume(TokenType.COLON, "Expected a colon ':' after parameter name.");
+                
+                Token typeT = GetCurrent();
+
+                if (typeT.tokenType == TokenType.IDENTIFIER || IsKeywordType(typeT.tokenType, true)) Advance();
+                else
+                {
+                    throw Error(name, "Expected a parameter type.");
+                }
+                //Token paramType = Consume(TokenType.IDENTIFIER, "Expected parameter type");
+                //Console.WriteLine("Added Param type " + typeT);
+
+                parameterTypes.Add(typeT);
+            } 
+            while (Match(TokenType.COMMA));
+        }
+        
+        
+        Consume(TokenType.RPAREN, "Expected ')' after function parameters.");
+        Consume(TokenType.COLON, "Expcted a ':' after function parameters.");
+        Token typeToken = GetCurrent();
+
+        if (typeToken.tokenType == TokenType.IDENTIFIER || IsKeywordType(typeToken.tokenType, true)) Advance();
+        else
+        {
+            throw Error(name, "Expected a valid function return type.");
+        }
+        //Token type = Consume(TokenType.IDENTIFIER, "Expected a type identifier");
+        
+        //Console.WriteLine("Parser 106");
+        //Console.WriteLine(typeToken);
+        
+        Consume(TokenType.LBRACE, "Expected '{' before " + kind + " body.");
+        List<Statement> statements = Block();
+        
+        return new Function(name, typeToken, parameters, parameterTypes, statements);
     }
 
     private Statement VariableDeclaration()
@@ -182,7 +241,7 @@ public class Parser
 
     private List<Statement> Block()
     {
-        Console.WriteLine("MEOW");
+        //Console.WriteLine("MEOW");
         List<Statement> statements = new List<Statement>();
         while ((!Check(TokenType.RBRACE) && !IsAtEnd()))
         {

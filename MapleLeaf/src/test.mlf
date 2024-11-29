@@ -1,5 +1,14 @@
-﻿print "Hello, World!";
+﻿
 
-print 5;
+fun down(x:int):void
+{
+    print x;
+    
+    if(x >0) 
+        down(x-1);
+}
 
 
+var x: int = 4;
+var err: float = 12.31;
+down(err);
