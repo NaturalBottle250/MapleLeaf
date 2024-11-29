@@ -337,8 +337,7 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
     public object VisitPrintStatement(PrintStatement printStatement)
     {
         object value = Evaluate(printStatement.expression);
-        //Console.WriteLine("HI");
-        //Console.WriteLine(value.GetType());
+
         Console.WriteLine(Stringify(value));
         return null;
     }
