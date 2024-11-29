@@ -16,6 +16,7 @@ public class Environment
     }
     internal void DefineVariable(string name, string type, object value)
     {
+
         variables[name] = (type, value);
     }
 

@@ -97,9 +97,72 @@ public class Parser
     private Statement Statement()
     {
         if (Match(TokenType.IF)) return IfStatement();
+        if (Match(TokenType.FOR)) return ForStatement();
+        if (Match(TokenType.WHILE)) return WhileStatement();
         if (Match(TokenType.PRINT)) return PrintStatement();
         if (Match(TokenType.LBRACE)) return new Block(Block());
         return Expressionstatement();
+    }
+
+    private Statement ForStatement()
+    {
+        Consume(TokenType.LPAREN, "Expected a '(' after 'for' statement.");
+
+        Statement initializer;
+        if (Match(TokenType.SEMICOLON))
+            initializer = null;
+        else if(Match(TokenType.VAR))
+            initializer = VariableDeclaration();
+        else initializer = Expressionstatement();
+        
+        Expression condition = null;
+        if(!Check(TokenType.SEMICOLON))
+            condition = Expression();
+        Consume(TokenType.SEMICOLON, "Expected ';' after loop condition.");
+        
+        Expression iterator = null;
+        if (!Check(TokenType.RPAREN))
+        {
+            iterator = Expression();
+        }
+        Consume(TokenType.RPAREN, "Expected ')' after loop clauses.");
+        
+        Statement body = Statement();
+        
+
+        if (iterator != null)
+        {
+            List<Statement> statements = new List<Statement>();
+
+            statements.Add(body);
+
+            statements.Add(new ExpressionStmt(iterator));
+
+            body = new Block(statements);
+        }
+        
+        if(condition == null) condition = new LiteralExpression(true);
+        body = new While(condition, body);
+
+        if (initializer != null)
+        {
+            List<Statement> statements = new List<Statement>();
+            statements.Add(initializer);
+            statements.Add(body);
+            body = new Block(statements);
+        }
+
+        return body;
+    }
+
+    private Statement WhileStatement()
+    {
+        Consume(TokenType.LPAREN, "Expected a '(' after 'while'.");
+        Expression condition = Expression();
+        Consume(TokenType.RPAREN, "Expected a ')' after 'while' condition.");
+        Statement body = Statement();
+        
+        return new While(condition, body);
     }
 
     private Statement IfStatement()

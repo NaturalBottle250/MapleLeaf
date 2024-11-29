@@ -13,6 +13,8 @@ public abstract class Statement
         R VisitBlockStatement(Block blockStatement);
         
         R VisitIfStatement(If ifStatement);
+        
+        R VisitWhileStatement(While whileStatement);
     }
     
     

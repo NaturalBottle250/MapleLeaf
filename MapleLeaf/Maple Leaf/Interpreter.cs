@@ -19,6 +19,7 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
     {
         readonly Token token;
 
+
         internal RuntimeError(Token token, string message) : base(message)
         {
             this.token = token;
@@ -323,6 +324,19 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         else
             value = DefaultValues.TryGetValue(variableStatement.type.lexeme.ToLower(),
                                               out var defaultValue) ? defaultValue : null;
+
+        bool varExists;
+        try
+        {
+            environment.GetVariable(variableStatement.name);
+            varExists = true;
+        }
+        catch (RuntimeError e)
+        {
+            varExists = false;
+        }
+        if(varExists)
+            throw new RuntimeError(variableStatement.name, "Variable '" + variableStatement.name.lexeme + "' is already defined in this scope.");
         environment.DefineVariable(variableStatement.name.lexeme, variableStatement.type.lexeme, value);
         return null;
     }
@@ -341,6 +355,15 @@ public class Interpreter: Expression.IVisitor<object>, Statement.IVisitor<object
         else if(ifStatement.elseBranch != null)
             Execute(ifStatement.elseBranch);
         
+        return null;
+    }
+
+    public object VisitWhileStatement(While whileStatement)
+    {
+        while (IsTF(Evaluate(whileStatement.condition)))
+        {
+            Execute(whileStatement.body);
+        }
         return null;
     }
 
