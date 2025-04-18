@@ -39,5 +39,3 @@ for(var index: int = 0; index < number; index = index + 1)
 }
 
 ```
-<h3>Potential file icon?</h3>
-![file icon maybe](https://github.com/user-attachments/assets/c57c29c3-302f-4ac1-ab81-d7ef80f8bb46)
