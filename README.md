@@ -1,6 +1,6 @@
-<H1>The readme is still under construction</H1>
+<H1>MapleLeaf</H1>
 
-<h3>In the meantime, here are some snippets of already-implemented features</h3>
+<h3>Here are some snippets of implemented features</h3>
 
   <img src="https://github.com/user-attachments/assets/a18bbb76-10ee-4fa5-a7f7-85a5c91cafb4" alt="Maple Leaf" />
 
